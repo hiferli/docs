@@ -37,12 +37,14 @@ app.get('/getText' , async (request , response) => {
         if(storedText !== null){
             return response.status(201).json({
                 "Message": "Text Found",
+                "status": true,
                 "storedText": storedText
             })
         }
-
+        
         return response.status(201).json({
-            "Message": "No Records Found"
+            "Message": "No Records Found",
+            "status": false
         })
     } catch (error) {
         return response.status(500).json({
@@ -62,6 +64,7 @@ app.post('/storeText' , async (request , response) => {
             const result = await NotepadModel.findOneAndUpdate({_id: 1} , {'text': text, 'timestamp': timestamp});
             return response.status(201).json({
                 'Message': "Saved Successfully",
+                "status": true,
                 "Result": result
             })
         } 
@@ -76,11 +79,13 @@ app.post('/storeText' , async (request , response) => {
 
         return response.json({
             "Message": "Created Successfully",
+            "status": true,
             "Result": result
         })
     } catch (error) {
         return response.status(500).json({
-            'Message': error.message
+            'Message': error.message,
+            "status": false
         })
     }
 })
